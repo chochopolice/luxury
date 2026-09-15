@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f3ee" />
+  <meta name="description" content="日常に贅沢を。上質な日用品・飲食品を集めたプレミアムセレクトショップ LUXE DAILY" />
+  <title>LUXE DAILY｜日常に贅沢を。</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="header-inner shell">
+      <a class="brand" href="#top" aria-label="LUXE DAILY ホーム">
+        <span class="brand-name">LUXE DAILY</span>
+        <span class="brand-sub">日常に、上質なものを。</span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く" aria-expanded="false">☰</button>
+
+      <nav class="main-nav" id="mainNav" aria-label="メインナビゲーション">
+        <a class="is-active" href="#top">ホーム</a>
+        <a href="#featuredItems">日用品</a>
+        <a href="#featuredItems">飲食品</a>
+        <a href="#specialContents">特集</a>
+        <a href="#specialContents">ギフト</a>
+        <a href="#featuredItems">ランキング</a>
+      </nav>
+
+      <div class="header-actions" aria-label="操作">
+        <button class="icon-btn" id="searchBtn" aria-label="検索">⌕</button>
+        <button class="icon-btn" id="favoritesBtn" aria-label="お気に入り">♡<span class="counter" id="favCount">0</span></button>
+      </div>
+
+      <p class="header-note">良いものと、<br>良い毎日を。</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <h1>日常に贅沢を。</h1>
+        <p>
+          何気ない一日を、特別なものに変えてくれる。<br>
+          上質な日用品と、心を満たす美味しさを、<br>
+          あなたの毎日に。
+        </p>
+        <a class="btn btn-outline" href="#featuredItems">上質な暮らしをはじめる <span>→</span></a>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-side-copy">
+          <p>上質なものが、</p>
+          <p>いつもの景色を</p>
+          <p>美しく変えていく。</p>
+        </div>
+        <div class="hero-slider-indicator">
+          <span>01 / 03</span>
+          <button aria-label="前へ">〈</button>
+          <button aria-label="次へ">〉</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="categoryTitle">
+      <div class="section-head">
+        <h2 id="categoryTitle">カテゴリから探す</h2>
+        <a class="section-link" href="#catalogSection">ALL CATEGORY →</a>
+      </div>
+      <div class="category-grid" id="categoryGrid"></div>
+    </section>
+
+    <section class="section shell" id="featuredItems" aria-labelledby="featuredTitle">
+      <div class="section-head">
+        <h2 id="featuredTitle">おすすめのアイテム</h2>
+        <a class="section-link" href="#catalogSection">FEATURED PRODUCTS →</a>
+      </div>
+      <div class="product-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="section shell catalog-section" id="catalogSection" aria-labelledby="catalogTitle">
+      <div class="section-head">
+        <h2 id="catalogTitle">取扱商品一覧</h2>
+        <a class="section-link" href="#catalogCards">ALL ITEMS →</a>
+      </div>
+      <div class="catalog-list-panel" id="catalogListPanel"></div>
+    </section>
+
+    <section class="section shell all-items-section" id="catalogCards" aria-labelledby="allItemsTitle">
+      <div class="section-head all-items-head">
+        <h2 id="allItemsTitle">商品一覧</h2>
+        <div class="catalog-tools">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="catalogSearch" type="search" placeholder="商品名・カテゴリで検索" autocomplete="off">
+          </label>
+          <select id="sortSelect" aria-label="並び替え">
+            <option value="featured">おすすめ順</option>
+            <option value="price-desc">価格が高い順</option>
+            <option value="price-asc">価格が安い順</option>
+            <option value="name">商品名順</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row" id="filterRow"></div>
+      <p class="result-count" id="resultCount"></p>
+      <div class="db-status" id="dbStatus" role="status" aria-live="polite">Supabaseから商品を読み込んでいます…</div>
+      <p class="affiliate-disclosure">※ 当サイトは商品紹介サイトです。購入は各販売先サイトで行われます。リンクにはアフィリエイトリンクが含まれる場合があります。価格・在庫・配送条件は販売先で最新情報をご確認ください。</p>
+      <div class="product-grid catalog-grid" id="catalogGrid"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <p>条件に一致する商品がありません。</p>
+        <button class="btn btn-dark" id="resetFilters">条件をリセット</button>
+      </div>
+    </section>
+
+    <section class="section shell" id="specialContents" aria-labelledby="specialTitle">
+      <div class="section-head">
+        <h2 id="specialTitle">特集</h2>
+        <a class="section-link" href="#specialContents">SPECIAL CONTENTS →</a>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card feature-food">
+          <div class="overlay-copy">
+            <h3>大切な人と過ごす、<br>特別な時間を。</h3>
+            <p>上質な食で、<br>心に残るひとときを。</p>
+            <a href="#catalogCards">グルメ特集 →</a>
+          </div>
+        </article>
+        <article class="feature-card feature-lifestyle">
+          <div class="overlay-copy">
+            <h3>上質な日用品で、<br>暮らしを整える。</h3>
+            <p>毎日使うものだからこそ、<br>本物を。</p>
+            <a href="#catalogCards">ライフスタイル特集 →</a>
+          </div>
+        </article>
+        <article class="feature-card feature-gift">
+          <div class="overlay-copy">
+            <h3>想いを届ける、<br>上質なギフト。</h3>
+            <p>大切なあの人に、<br>日常の中の特別を。</p>
+            <a href="#catalogCards">ギフト特集 →</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand">
+        <p class="footer-logo">LUXE DAILY</p>
+        <p class="footer-sub">日常に贅沢を。</p>
+      </div>
+      <div class="footer-message">
+        <p>
+          上質なものがつくる、豊かな毎日を。<br>
+          LUXE DAILY は、日々の暮らしを少しだけ特別にする<br>
+          上質なアイテムをお届けします。
+        </p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <a href="#">ご利用ガイド</a>
+          <a href="#">よくあるご質問</a>
+          <a href="#">お問い合わせ</a>
+        </div>
+        <div>
+          <a href="#">会社概要</a>
+          <a href="#">プライバシーポリシー</a>
+          <a href="#">特定商取引法に基づく表記</a>
+        </div>
+      </div>
+      <div class="footer-social">
+        <span>◎</span>
+        <span>f</span>
+        <span>◍</span>
+        <span>▶</span>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 LUXE DAILY. All rights reserved.</p>
+        <a href="#top">良いものと、良い毎日を。</a>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="productDialog" class="product-dialog">
+    <button class="dialog-close" id="dialogClose" aria-label="閉じる">×</button>
+    <div id="dialogContent"></div>
+  </dialog>
+
+  <dialog id="searchDialog" class="search-dialog">
+    <button class="dialog-close" id="searchDialogClose" aria-label="閉じる">×</button>
+    <div class="search-dialog-inner">
+      <p class="search-label">SEARCH</p>
+      <h2>商品を探す</h2>
+      <label class="search-box large">
+        <span>⌕</span>
+        <input id="globalSearchInput" type="search" placeholder="商品名・カテゴリを入力">
+      </label>
+      <p class="search-helper">入力後 Enter で商品一覧まで移動します。</p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
