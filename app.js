@@ -34,6 +34,8 @@
     'コーラ', 'コーヒー', '水', '炭酸水', '水・炭酸水', 'お茶・緑茶', 'お茶', '紅茶',
     'ビール', '日本酒', 'ウイスキー', 'ウォッカ',
     'クッキー', 'キャンディ', 'チョコ', 'グミ', 'アイス', 'ガム',
+    'スナック菓子', '特産品', '地方の菓子', '貴重なお菓子', 'プリン', 'カヌレ',
+    '栄養補助食品・完全栄養食',
     '日用品', '食品', 'ギフト'
   ];
 
@@ -190,6 +192,8 @@
   }
 
   async function loadProducts() {
+    const addedProducts = (window.LUXE_ADDED_PRODUCTS || []).map(normalizeProduct);
+
     if (!window.supabase?.createClient) {
       throw new Error('Supabase JavaScript SDKを読み込めませんでした。インターネット接続を確認してください。');
     }
@@ -204,9 +208,15 @@
 
     if (error) throw error;
 
-    return (data || [])
+    const remoteProducts = (data || [])
       .map(normalizeProduct)
       .filter(product => product.isActive);
+
+    const addedIds = new Set(addedProducts.map(product => product.id));
+    return [
+      ...remoteProducts.filter(product => !addedIds.has(product.id)),
+      ...addedProducts.filter(product => product.isActive)
+    ];
   }
 
   function uniqueCategories() {
@@ -509,9 +519,11 @@
       }
     } catch (error) {
       console.error('Supabase load error:', error);
-      products = [];
+      products = (window.LUXE_ADDED_PRODUCTS || [])
+        .map(normalizeProduct)
+        .filter(product => product.isActive);
       renderAll();
-      setDbStatus(`商品データを取得できませんでした：${error.message || error}`, 'error');
+      setDbStatus(`Supabaseの商品データを取得できなかったため、追加商品${products.length}件を表示しています。`, 'error');
     }
   }
 
