@@ -1,6 +1,75 @@
 (() => {
+  // Hero slider works independently of Supabase so the arrows always respond.
+  const heroSlides = [
+    {
+      image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=85',
+      copy: ['上質なものが、', 'いつもの景色を', '美しく変えていく。']
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1600&q=85',
+      copy: ['毎日ふれるものに、', '心地よさという', '小さな贅沢を。']
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=85',
+      copy: ['いつもの食卓に、', '記憶に残る', 'ひとときを。']
+    }
+  ];
+
+  function initHeroSlider() {
+    const hero = document.querySelector('.hero-visual');
+    const count = document.getElementById('heroSlideCount');
+    const prev = document.getElementById('heroPrev');
+    const next = document.getElementById('heroNext');
+    const copy = document.querySelector('.hero-side-copy');
+    if (!hero || !count || !prev || !next) return;
+
+    let index = 0;
+    let timer = null;
+
+    const render = (newIndex, animate = true) => {
+      index = (newIndex + heroSlides.length) % heroSlides.length;
+      const slide = heroSlides[index];
+      const apply = () => {
+        hero.style.backgroundImage = `linear-gradient(0deg,rgba(36,28,22,.06),rgba(36,28,22,.06)),url(\"${slide.image}\")`;
+        count.textContent = `${String(index + 1).padStart(2, '0')} / ${String(heroSlides.length).padStart(2, '0')}`;
+        if (copy) copy.innerHTML = slide.copy.map(line => `<p>${line}</p>`).join('');
+        hero.classList.remove('is-changing');
+      };
+      if (animate) {
+        hero.classList.add('is-changing');
+        window.setTimeout(apply, 120);
+      } else {
+        apply();
+      }
+    };
+
+    const restart = () => {
+      if (timer) window.clearInterval(timer);
+      timer = window.setInterval(() => render(index + 1), 7000);
+    };
+
+    prev.addEventListener('click', () => { render(index - 1); restart(); });
+    next.addEventListener('click', () => { render(index + 1); restart(); });
+    hero.addEventListener('mouseenter', () => timer && window.clearInterval(timer));
+    hero.addEventListener('mouseleave', restart);
+    hero.addEventListener('focusin', () => timer && window.clearInterval(timer));
+    hero.addEventListener('focusout', restart);
+
+    render(0, false);
+    restart();
+  }
+
+  initHeroSlider();
+
   const cfg = window.ORDINARY_LUXE_DB_CONFIG;
-  if (!cfg || !window.supabase) return;
+  if (!cfg || !window.supabase) {
+    const status = document.getElementById('dbStatus');
+    if (status) {
+      status.textContent = '商品データベースの接続設定を確認してください。';
+      status.classList.add('error');
+    }
+    return;
+  }
   const client = window.supabase.createClient(cfg.supabaseUrl, cfg.publishableKey);
   const money = new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0});
   const oldFavs = JSON.parse(localStorage.getItem('luxeFavorites') || '[]');

@@ -9,13 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20260926-2" />
+  <style>
+    /* Critical header rules kept inline so GitHub Pages/browser CSS cache cannot wrap the logo. */
+    .brand-name,.footer-logo{white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important}
+    .brand{min-width:max-content;flex-shrink:0}
+    @media (max-width:920px){
+      .header-inner{grid-template-columns:1fr auto auto!important}
+      .main-nav{position:absolute!important;left:0;right:0;top:78px;display:none!important;flex-direction:column}
+      .main-nav.open{display:flex!important}
+      .menu-toggle{display:grid!important}
+    }
+  </style>
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="header-inner shell">
       <a class="brand" href="#top" aria-label="ORDINARY LUXE ホーム">
-        <span class="brand-name">ORDINARY LUXE</span>
+        <span class="brand-name">ORDINARY&nbsp;LUXE</span>
         <span class="brand-sub">日常に、上質なものを。</span>
       </a>
 
@@ -56,10 +67,10 @@
           <p>いつもの景色を</p>
           <p>美しく変えていく。</p>
         </div>
-        <div class="hero-slider-indicator">
-          <span>01 / 03</span>
-          <button aria-label="前へ">〈</button>
-          <button aria-label="次へ">〉</button>
+        <div class="hero-slider-indicator" aria-label="メインビジュアル切り替え">
+          <span id="heroSlideCount">01 / 03</span>
+          <button type="button" id="heroPrev" aria-label="前のスライドへ">〈</button>
+          <button type="button" id="heroNext" aria-label="次のスライドへ">〉</button>
         </div>
       </div>
     </section>
@@ -149,7 +160,7 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <div class="footer-brand">
-        <p class="footer-logo">ORDINARY LUXE</p>
+        <p class="footer-logo">ORDINARY&nbsp;LUXE</p>
         <p class="footer-sub">日常に贅沢を。</p>
       </div>
       <div class="footer-message">
@@ -205,7 +216,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="config.js?v=20260926-2"></script>
+  <script src="app.js?v=20260926-2"></script>
 </body>
 </html>
