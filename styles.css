@@ -97,3 +97,31 @@
 .special-empty{padding:34px 0;color:var(--muted);text-align:center}
 @media(max-width:920px){.special-product-grid{grid-template-columns:repeat(2,1fr)}.special-new-head{align-items:flex-start;flex-direction:column;gap:6px}}
 @media(max-width:640px){.special-category-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:12px}.special-category-tab{white-space:nowrap}.special-product-grid{grid-template-columns:1fr 1fr;gap:22px 12px}}
+
+/* 2026-09-27: guide / FAQ / contact / legal information */
+.footer-links-single{grid-template-columns:1fr;max-width:320px}
+.footer-link-button{display:block;width:100%;border:0;background:transparent;color:rgba(243,238,229,.88);text-align:left;padding:0;margin:0 0 12px;cursor:pointer;font-family:inherit;font-size:.9rem}
+.footer-link-button:hover,.footer-link-button:focus-visible{color:#fff;text-decoration:underline;text-underline-offset:4px;outline:none}
+.info-dialog{width:min(760px,calc(100% - 32px));max-height:min(86vh,860px);border:0;padding:0;background:#fff;color:var(--ink);box-shadow:0 26px 70px rgba(17,12,9,.30)}
+.info-dialog-inner{padding:52px 48px 44px;overflow:auto;max-height:86vh}
+.info-kicker{margin:0 0 9px;color:var(--gold-dark);font-family:Inter,sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.15em}
+.info-dialog h2{margin:0 0 26px;font-size:2rem;font-weight:500}
+.info-dialog p{line-height:1.95}
+.info-note{margin:24px 0;padding:20px 22px;background:#f8f4ee;border-left:3px solid var(--gold)}
+.info-note strong{display:block;margin-bottom:7px;color:var(--gold-dark)}
+.info-note p{margin:0}
+.faq-list{border-top:1px solid var(--line)}
+.faq-list details{border-bottom:1px solid var(--line);padding:0}
+.faq-list summary{list-style:none;cursor:pointer;padding:20px 4px;font-weight:500;line-height:1.7;position:relative;padding-right:34px}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:'＋';position:absolute;right:4px;top:20px;color:var(--gold-dark)}
+.faq-list details[open] summary::after{content:'−'}
+.faq-list details p{margin:0;padding:0 4px 22px;color:#5f564d}
+.line-contact-button{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;padding:14px 24px;background:#06c755;color:#fff;text-decoration:none;border-radius:4px;font-weight:600}
+.line-contact-button.is-placeholder{background:#a6a09a;cursor:not-allowed}
+.line-setting-note{font-size:.78rem;color:var(--muted)}
+.legal-section{padding:20px 0;border-top:1px solid var(--line)}
+.legal-section:last-child{border-bottom:1px solid var(--line)}
+.legal-section h3{margin:0 0 8px;font-size:1.02rem;font-weight:600}
+.legal-section p{margin:0;color:#5f564d}
+@media(max-width:640px){.info-dialog-inner{padding:44px 22px 30px}.info-dialog h2{font-size:1.6rem}.footer-links-single{max-width:none}}

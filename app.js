@@ -419,3 +419,31 @@
   saveFavs();
   load();
 })();
+
+// -----------------------------------------------------------------------------
+// Footer information dialogs
+// -----------------------------------------------------------------------------
+(() => {
+  const dialogButtons = document.querySelectorAll('[data-info-dialog]');
+  dialogButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const dialog = document.getElementById(button.dataset.infoDialog);
+      if (dialog?.showModal) dialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('.info-dialog-close').forEach(button => {
+    button.addEventListener('click', () => button.closest('dialog')?.close());
+  });
+
+  document.querySelectorAll('.info-dialog').forEach(dialog => {
+    dialog.addEventListener('click', event => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+
+  const lineLink = document.getElementById('officialLineLink');
+  if (lineLink?.getAttribute('aria-disabled') === 'true') {
+    lineLink.addEventListener('click', event => event.preventDefault());
+  }
+})();
