@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260926-2" />
+  <link rel="stylesheet" href="styles.css?v=20260927-1" />
   <style>
     /* Critical header rules kept inline so GitHub Pages/browser CSS cache cannot wrap the logo. */
     .brand-name,.footer-logo{white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important}
@@ -78,7 +78,7 @@
     <section class="section shell" aria-labelledby="categoryTitle">
       <div class="section-head">
         <h2 id="categoryTitle">カテゴリから探す</h2>
-        <a class="section-link" href="#catalogSection">ALL CATEGORY →</a>
+        <a class="section-link" href="#catalogCards">ALL CATEGORY →</a>
       </div>
       <div class="category-grid" id="categoryGrid"></div>
     </section>
@@ -86,17 +86,9 @@
     <section class="section shell" id="featuredItems" aria-labelledby="featuredTitle">
       <div class="section-head">
         <h2 id="featuredTitle">おすすめのアイテム</h2>
-        <a class="section-link" href="#catalogSection">FEATURED PRODUCTS →</a>
+        <a class="section-link" href="#catalogCards">FEATURED PRODUCTS →</a>
       </div>
       <div class="product-grid" id="featuredGrid"></div>
-    </section>
-
-    <section class="section shell catalog-section" id="catalogSection" aria-labelledby="catalogTitle">
-      <div class="section-head">
-        <h2 id="catalogTitle">取扱商品一覧</h2>
-        <a class="section-link" href="#catalogCards">ALL ITEMS →</a>
-      </div>
-      <div class="catalog-list-panel" id="catalogListPanel"></div>
     </section>
 
     <section class="section shell all-items-section" id="catalogCards" aria-labelledby="allItemsTitle">
@@ -126,34 +118,21 @@
       </div>
     </section>
 
-    <section class="section shell" id="specialContents" aria-labelledby="specialTitle">
+    <section class="section shell special-new-section" id="specialContents" aria-labelledby="specialTitle">
       <div class="section-head">
-        <h2 id="specialTitle">特集</h2>
-        <a class="section-link" href="#specialContents">SPECIAL CONTENTS →</a>
+        <div>
+          <h2 id="specialTitle">特集</h2>
+          <p class="special-lead">カテゴリごとの新着商品</p>
+        </div>
+        <span class="section-link">NEW ARRIVALS</span>
       </div>
-      <div class="feature-grid">
-        <article class="feature-card feature-food">
-          <div class="overlay-copy">
-            <h3>大切な人と過ごす、<br>特別な時間を。</h3>
-            <p>上質な食で、<br>心に残るひとときを。</p>
-            <a href="#catalogCards">グルメ特集 →</a>
-          </div>
-        </article>
-        <article class="feature-card feature-lifestyle">
-          <div class="overlay-copy">
-            <h3>上質な日用品で、<br>暮らしを整える。</h3>
-            <p>毎日使うものだからこそ、<br>本物を。</p>
-            <a href="#catalogCards">ライフスタイル特集 →</a>
-          </div>
-        </article>
-        <article class="feature-card feature-gift">
-          <div class="overlay-copy">
-            <h3>想いを届ける、<br>上質なギフト。</h3>
-            <p>大切なあの人に、<br>日常の中の特別を。</p>
-            <a href="#catalogCards">ギフト特集 →</a>
-          </div>
-        </article>
+      <div class="special-category-tabs" id="specialCategoryTabs" aria-label="特集カテゴリ"></div>
+      <div class="special-new-head">
+        <p class="special-kicker">NEW ARRIVALS</p>
+        <h3 id="specialCategoryTitle">新着商品</h3>
       </div>
+      <div class="product-grid special-product-grid" id="specialNewGrid"></div>
+      <p class="special-empty" id="specialEmpty" hidden>このカテゴリにはまだ商品がありません。</p>
     </section>
   </main>
 
@@ -216,7 +195,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260926-2"></script>
-  <script src="app.js?v=20260926-2"></script>
+  <script src="config.js?v=20260927-1"></script>
+  <script src="app.js?v=20260927-1"></script>
 </body>
 </html>

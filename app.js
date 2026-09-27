@@ -80,13 +80,15 @@
   const oldFavs = JSON.parse(localStorage.getItem('luxeFavorites') || '[]');
   const newFavs = JSON.parse(localStorage.getItem('ordinaryLuxeFavorites') || '[]');
   const favorites = new Set([...oldFavs, ...newFavs]);
-  const state = { category: 'すべて', query: '', sort: 'featured', favoritesOnly: false };
+  const state = { category: 'すべて', query: '', sort: 'featured', favoritesOnly: false, specialCategory: '' };
   let products = [];
 
   const $ = id => document.getElementById(id);
   const els = {
     categoryGrid: $('categoryGrid'), featuredGrid: $('featuredGrid'),
-    catalogListPanel: $('catalogListPanel'), catalogGrid: $('catalogGrid'),
+    catalogGrid: $('catalogGrid'), specialCategoryTabs: $('specialCategoryTabs'),
+    specialNewGrid: $('specialNewGrid'), specialCategoryTitle: $('specialCategoryTitle'),
+    specialEmpty: $('specialEmpty'),
     filterRow: $('filterRow'), resultCount: $('resultCount'), dbStatus: $('dbStatus'),
     emptyState: $('emptyState'), catalogSearch: $('catalogSearch'), sortSelect: $('sortSelect'),
     favCount: $('favCount'), productDialog: $('productDialog'), dialogContent: $('dialogContent'),
@@ -121,6 +123,7 @@
       affiliate: Boolean(pick(row, 'is_affiliate')),
       shopName: pick(row, 'shop_name') || '',
       checkedAt: pick(row, 'price_checked_at') || '',
+      createdAt: pick(row, 'created_at', 'registered_at', '登録日時') || '',
       featured: pick(row, 'featured') !== false,
       status: pick(row, 'status') || ''
     };
@@ -202,10 +205,14 @@
     return [...new Set(products.map(p => p.department))].sort((a, b) => a.localeCompare(b, 'ja'));
   }
 
-  function card(p) {
+  function card(p, options = {}) {
     const fav = favorites.has(p.id);
+    const showNew = Boolean(options.showNew);
     return `<article class="product-card">
-      <button class="product-thumb" data-open="${escapeAttr(p.id)}">${imageMarkup(p)}</button>
+      <button class="product-thumb" data-open="${escapeAttr(p.id)}">
+        ${imageMarkup(p)}
+        ${showNew ? '<span class="new-arrival-badge">NEW</span>' : ''}
+      </button>
       <div class="product-info"><div>
         <button class="product-name-button" data-open="${escapeAttr(p.id)}">${escapeHtml(p.name)}</button>
         <p class="product-price">${money.format(p.price)}</p>
@@ -230,14 +237,48 @@
     attachImageFallbacks(els.featuredGrid);
   }
 
-  function renderList() {
-    const names = products.map(p => p.name);
-    const size = Math.max(1, Math.ceil(names.length / 4));
-    const cols = [];
-    for (let i = 0; i < names.length; i += size) cols.push(names.slice(i, i + size));
-    els.catalogListPanel.innerHTML = cols.map(col => `<div class="catalog-column">${col.map(n =>
-      `<a class="catalog-link" href="#catalogCards" data-product-name="${escapeAttr(n)}"><span>${escapeHtml(n)}</span><span>〉</span></a>`
-    ).join('')}</div>`).join('');
+  function productTimestamp(p) {
+    const created = Date.parse(p.createdAt || '');
+    if (Number.isFinite(created)) return created;
+    const checked = Date.parse(p.checkedAt || '');
+    if (Number.isFinite(checked)) return checked;
+    return 0;
+  }
+
+  function newestDepartment() {
+    const latest = [...products].sort((a, b) => productTimestamp(b) - productTimestamp(a))[0];
+    return latest?.department || cats()[0] || '';
+  }
+
+  function renderSpecial() {
+    if (!els.specialCategoryTabs || !els.specialNewGrid) return;
+    const categories = cats();
+    if (!categories.length) {
+      els.specialCategoryTabs.innerHTML = '';
+      els.specialNewGrid.innerHTML = '';
+      if (els.specialEmpty) els.specialEmpty.hidden = false;
+      return;
+    }
+
+    if (!state.specialCategory || !categories.includes(state.specialCategory)) {
+      state.specialCategory = newestDepartment();
+    }
+
+    els.specialCategoryTabs.innerHTML = categories.map(category =>
+      `<button class="special-category-tab ${state.specialCategory === category ? 'active' : ''}" data-special-category="${escapeAttr(category)}">${escapeHtml(category)}</button>`
+    ).join('');
+
+    const latest = products
+      .filter(p => p.department === state.specialCategory)
+      .sort((a, b) => productTimestamp(b) - productTimestamp(a))
+      .slice(0, 4);
+
+    if (els.specialCategoryTitle) {
+      els.specialCategoryTitle.textContent = `${state.specialCategory}の新着商品`;
+    }
+    els.specialNewGrid.innerHTML = latest.map(p => card(p, { showNew: true })).join('');
+    if (els.specialEmpty) els.specialEmpty.hidden = latest.length > 0;
+    attachImageFallbacks(els.specialNewGrid);
   }
 
   function filtered() {
@@ -274,6 +315,7 @@
   function saveFavs() {
     localStorage.setItem('ordinaryLuxeFavorites', JSON.stringify([...favorites]));
     renderFeatured();
+    renderSpecial();
     renderCatalog();
   }
 
@@ -319,7 +361,7 @@
     }
     products = (data || []).map(normalize);
     els.dbStatus.textContent = `Supabaseから${products.length}件の商品を読み込みました。`;
-    renderCategories(); renderFeatured(); renderList(); renderCatalog();
+    renderCategories(); renderFeatured(); renderSpecial(); renderCatalog();
   }
 
   document.addEventListener('click', e => {
@@ -328,6 +370,9 @@
 
     const filter = e.target.closest('[data-filter]');
     if (filter) { state.category = filter.dataset.filter; state.favoritesOnly = false; renderCatalog(); }
+
+    const specialCategory = e.target.closest('[data-special-category]');
+    if (specialCategory) { state.specialCategory = specialCategory.dataset.specialCategory; renderSpecial(); }
 
     const open = e.target.closest('[data-open]');
     if (open) openProduct(open.dataset.open);
