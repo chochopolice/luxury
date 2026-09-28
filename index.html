@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f6f3ee" />
-  <meta name="description" content="日常に贅沢を。上質な日用品・飲食品を集めたプレミアムセレクトショップ ORDINARY LUXE" />
+  <meta name="description" content="日常に贅沢を。上質な日用品・飲食品を紹介するプレミアム商品紹介メディア ORDINARY LUXE" />
   <title>ORDINARY LUXE｜日常に贅沢を。</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260927-1" />
+  <link rel="stylesheet" href="styles.css?v=20260927-2" />
   <style>
     /* Critical header rules kept inline so GitHub Pages/browser CSS cache cannot wrap the logo. */
     .brand-name,.footer-logo{white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important}
@@ -146,26 +146,16 @@
         <p>
           上質なものがつくる、豊かな毎日を。<br>
           ORDINARY LUXE は、日々の暮らしを少しだけ特別にする<br>
-          上質なアイテムをお届けします。
+          上質なアイテムを紹介する商品情報メディアです。
         </p>
       </div>
-      <div class="footer-links">
+      <div class="footer-links footer-links-single">
         <div>
-          <a href="#">ご利用ガイド</a>
-          <a href="#">よくあるご質問</a>
-          <a href="#">お問い合わせ</a>
+          <button class="footer-link-button" type="button" data-info-dialog="guideDialog">ご利用ガイド</button>
+          <button class="footer-link-button" type="button" data-info-dialog="faqDialog">よくあるご質問</button>
+          <button class="footer-link-button" type="button" data-info-dialog="contactDialog">お問い合わせ</button>
+          <button class="footer-link-button" type="button" data-info-dialog="legalDialog">特定商取引法・広告に関する表記</button>
         </div>
-        <div>
-          <a href="#">会社概要</a>
-          <a href="#">プライバシーポリシー</a>
-          <a href="#">特定商取引法に基づく表記</a>
-        </div>
-      </div>
-      <div class="footer-social">
-        <span>◎</span>
-        <span>f</span>
-        <span>◍</span>
-        <span>▶</span>
       </div>
       <div class="footer-bottom">
         <p>© 2026 ORDINARY LUXE. All rights reserved.</p>
@@ -192,10 +182,85 @@
     </div>
   </dialog>
 
+
+  <dialog id="guideDialog" class="info-dialog">
+    <button class="dialog-close info-dialog-close" type="button" aria-label="閉じる">×</button>
+    <div class="info-dialog-inner">
+      <p class="info-kicker">GUIDE</p>
+      <h2>ご利用ガイド</h2>
+      <p>ORDINARY LUXE は、高価で希少な日用品・飲食品を紹介する商品情報サイトです。当サイト上で商品の販売、注文受付、決済、配送は行っていません。</p>
+      <div class="info-note">
+        <strong>商品に関するお問い合わせについて</strong>
+        <p>商品の仕様、在庫、注文、配送、返品・交換、不具合、保証などの商品固有のお問い合わせは受け付けていません。購入先のショップまたはメーカーへ直接お問い合わせください。</p>
+      </div>
+      <p>掲載価格・在庫・商品情報は確認時点の情報です。購入前に、必ずリンク先の販売ページで最新の内容をご確認ください。</p>
+    </div>
+  </dialog>
+
+  <dialog id="faqDialog" class="info-dialog">
+    <button class="dialog-close info-dialog-close" type="button" aria-label="閉じる">×</button>
+    <div class="info-dialog-inner">
+      <p class="info-kicker">FAQ</p>
+      <h2>よくあるご質問</h2>
+      <div class="faq-list">
+        <details open>
+          <summary>Q. ORDINARY LUXE で商品を購入できますか？</summary>
+          <p>A. 当サイトでは購入できません。「販売先で商品を見る」などのリンクから、楽天市場・Amazon・メーカー公式サイト等の販売先へ移動して購入してください。</p>
+        </details>
+        <details>
+          <summary>Q. 表示されている価格は現在の販売価格ですか？</summary>
+          <p>A. 掲載価格は確認時点の情報です。価格、在庫、送料、キャンペーン等は変更される場合があるため、購入時は販売先ページの表示を優先してください。</p>
+        </details>
+        <details>
+          <summary>Q. 配送・返品・商品不良について問い合わせできますか？</summary>
+          <p>A. 商品の注文、配送、返品・交換、故障・不良、保証については当サイトでは対応していません。購入先のショップまたはメーカーへお問い合わせください。</p>
+        </details>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="contactDialog" class="info-dialog">
+    <button class="dialog-close info-dialog-close" type="button" aria-label="閉じる">×</button>
+    <div class="info-dialog-inner">
+      <p class="info-kicker">CONTACT</p>
+      <h2>お問い合わせ</h2>
+      <p>ORDINARY LUXE へのお問い合わせは、公式LINEで受け付けます。掲載内容の修正依頼、サイトに関するご意見・ご要望などはこちらからご連絡ください。</p>
+      <div class="info-note">
+        <strong>商品そのもののお問い合わせは対象外です</strong>
+        <p>注文、在庫、配送、返品・交換、商品不良、保証等については、購入先のショップまたはメーカーへ直接お問い合わせください。</p>
+      </div>
+      <a class="line-contact-button" id="officialLineLink" href="https://lin.ee/NhMi8oL" target="_blank" rel="noopener">公式LINEで問い合わせる</a>
+    </div>
+  </dialog>
+
+  <dialog id="legalDialog" class="info-dialog">
+    <button class="dialog-close info-dialog-close" type="button" aria-label="閉じる">×</button>
+    <div class="info-dialog-inner">
+      <p class="info-kicker">LEGAL / ADVERTISING</p>
+      <h2>特定商取引法・広告に関する表記</h2>
+      <section class="legal-section">
+        <h3>当サイトの位置づけ</h3>
+        <p>ORDINARY LUXE は商品紹介・情報提供を目的としたサイトであり、当サイト自身が掲載商品の販売、注文受付、決済、配送を行うものではありません。商品の売買契約は、リンク先の販売事業者と利用者との間で成立します。</p>
+      </section>
+      <section class="legal-section">
+        <h3>販売条件について</h3>
+        <p>販売業者、販売価格、送料、支払方法、商品の引渡時期、返品・交換条件、保証その他の取引条件は、各販売先ページに表示される内容をご確認ください。当サイトの掲載価格と販売先の価格が異なる場合は、販売先の表示が優先されます。</p>
+      </section>
+      <section class="legal-section">
+        <h3>アフィリエイト広告について</h3>
+        <p>当サイトはアフィリエイトプログラムを利用しています。掲載リンクを経由して商品が購入された場合、当サイト運営者が紹介料を受け取ることがあります。広告・アフィリエイトリンクを含むことが分かるよう、商品一覧付近にもその旨を表示しています。</p>
+      </section>
+      <section class="legal-section">
+        <h3>商品情報・お問い合わせ</h3>
+        <p>商品画像、価格、在庫、仕様等は変更される場合があります。商品の購入、配送、返品・交換、不具合等については、リンク先の販売事業者またはメーカーへお問い合わせください。</p>
+      </section>
+    </div>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260927-1"></script>
-  <script src="app.js?v=20260927-1"></script>
+  <script src="config.js?v=20260927-2"></script>
+  <script src="app.js?v=20260927-2"></script>
 </body>
 </html>
