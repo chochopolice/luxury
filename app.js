@@ -88,8 +88,7 @@
     categoryGrid: $('categoryGrid'), featuredGrid: $('featuredGrid'),
     catalogGrid: $('catalogGrid'), specialCategoryTabs: $('specialCategoryTabs'),
     specialNewGrid: $('specialNewGrid'), specialCategoryTitle: $('specialCategoryTitle'),
-    specialEmpty: $('specialEmpty'), dailyMiscNewGrid: $('dailyMiscNewGrid'),
-    dailyMiscEmpty: $('dailyMiscEmpty'),
+    specialEmpty: $('specialEmpty'),
     filterRow: $('filterRow'), resultCount: $('resultCount'), dbStatus: $('dbStatus'),
     emptyState: $('emptyState'), catalogSearch: $('catalogSearch'), sortSelect: $('sortSelect'),
     favCount: $('favCount'), productDialog: $('productDialog'), dialogContent: $('dialogContent'),
@@ -306,18 +305,6 @@
     attachImageFallbacks(els.specialNewGrid);
   }
 
-  function renderDailyMiscNew() {
-    if (!els.dailyMiscNewGrid) return;
-    const targetDepartments = new Set(['日用品', '雑貨・文房具・手芸', '日用品雑貨・文房具・手芸']);
-    const latest = products
-      .filter(p => targetDepartments.has(p.department))
-      .sort((a, b) => productTimestamp(b) - productTimestamp(a))
-      .slice(0, 4);
-
-    els.dailyMiscNewGrid.innerHTML = latest.map(p => card(p, { showNew: true })).join('');
-    if (els.dailyMiscEmpty) els.dailyMiscEmpty.hidden = latest.length > 0;
-    attachImageFallbacks(els.dailyMiscNewGrid);
-  }
 
   function filtered() {
     let list = [...products];
@@ -354,7 +341,6 @@
     localStorage.setItem('ordinaryLuxeFavorites', JSON.stringify([...favorites]));
     renderFeatured();
     renderSpecial();
-    renderDailyMiscNew();
     renderCatalog();
   }
 
@@ -400,7 +386,7 @@
     }
     products = (data || []).map(normalize);
     els.dbStatus.textContent = `Supabaseから${products.length}件の商品を読み込みました。`;
-    renderCategories(); renderFeatured(); renderSpecial(); renderDailyMiscNew(); renderCatalog();
+    renderCategories(); renderFeatured(); renderSpecial(); renderCatalog();
   }
 
   document.addEventListener('click', e => {
