@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260927-2" />
+  <link rel="stylesheet" href="styles.css?v=20260929-1" />
   <style>
     /* Critical header rules kept inline so GitHub Pages/browser CSS cache cannot wrap the logo. */
     .brand-name,.footer-logo{white-space:nowrap!important;word-break:keep-all!important;overflow-wrap:normal!important}
@@ -34,11 +34,10 @@
 
       <nav class="main-nav" id="mainNav" aria-label="メインナビゲーション">
         <a class="is-active" href="#top">ホーム</a>
-        <a href="#featuredItems">日用品</a>
-        <a href="#featuredItems">飲食品</a>
-        <a href="#specialContents">特集</a>
-        <a href="#specialContents">ギフト</a>
-        <a href="#featuredItems">ランキング</a>
+        <a href="#categorySection">カテゴリ</a>
+        <a href="#featuredItems">おすすめ</a>
+        <a href="#specialContents">特集・新着</a>
+        <a href="#catalogCards">商品一覧</a>
       </nav>
 
       <div class="header-actions" aria-label="操作">
@@ -75,7 +74,7 @@
       </div>
     </section>
 
-    <section class="section shell" aria-labelledby="categoryTitle">
+    <section class="section shell" id="categorySection" aria-labelledby="categoryTitle">
       <div class="section-head">
         <h2 id="categoryTitle">カテゴリから探す</h2>
         <a class="section-link" href="#catalogCards">ALL CATEGORY →</a>
@@ -89,6 +88,35 @@
         <a class="section-link" href="#catalogCards">FEATURED PRODUCTS →</a>
       </div>
       <div class="product-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="section shell special-new-section" id="specialContents" aria-labelledby="specialTitle">
+      <div class="section-head">
+        <div>
+          <h2 id="specialTitle">特集</h2>
+          <p class="special-lead">カテゴリごとの新着商品</p>
+        </div>
+        <span class="section-link">NEW ARRIVALS</span>
+      </div>
+      <div class="special-category-tabs" id="specialCategoryTabs" aria-label="特集カテゴリ"></div>
+      <div class="special-new-head">
+        <p class="special-kicker">NEW ARRIVALS</p>
+        <h3 id="specialCategoryTitle">新着商品</h3>
+      </div>
+      <div class="product-grid special-product-grid" id="specialNewGrid"></div>
+      <p class="special-empty" id="specialEmpty" hidden>このカテゴリにはまだ商品がありません。</p>
+    </section>
+
+    <section class="section shell daily-misc-new-section" id="dailyMiscNew" aria-labelledby="dailyMiscNewTitle">
+      <div class="section-head">
+        <div>
+          <h2 id="dailyMiscNewTitle">日用品・雑貨・文房具・手芸の新着商品</h2>
+          <p class="special-lead">暮らしの中で使う上質なアイテムから、新しく追加された商品をご紹介します。</p>
+        </div>
+        <a class="section-link" href="#catalogCards">商品一覧へ →</a>
+      </div>
+      <div class="product-grid special-product-grid" id="dailyMiscNewGrid"></div>
+      <p class="special-empty" id="dailyMiscEmpty" hidden>このカテゴリにはまだ商品がありません。</p>
     </section>
 
     <section class="section shell all-items-section" id="catalogCards" aria-labelledby="allItemsTitle">
@@ -118,22 +146,7 @@
       </div>
     </section>
 
-    <section class="section shell special-new-section" id="specialContents" aria-labelledby="specialTitle">
-      <div class="section-head">
-        <div>
-          <h2 id="specialTitle">特集</h2>
-          <p class="special-lead">カテゴリごとの新着商品</p>
-        </div>
-        <span class="section-link">NEW ARRIVALS</span>
-      </div>
-      <div class="special-category-tabs" id="specialCategoryTabs" aria-label="特集カテゴリ"></div>
-      <div class="special-new-head">
-        <p class="special-kicker">NEW ARRIVALS</p>
-        <h3 id="specialCategoryTitle">新着商品</h3>
-      </div>
-      <div class="product-grid special-product-grid" id="specialNewGrid"></div>
-      <p class="special-empty" id="specialEmpty" hidden>このカテゴリにはまだ商品がありません。</p>
-    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -260,7 +273,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=20260927-2"></script>
-  <script src="app.js?v=20260927-2"></script>
+  <script src="config.js?v=20260929-1"></script>
+  <script src="app.js?v=20260929-1"></script>
 </body>
 </html>

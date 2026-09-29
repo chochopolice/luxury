@@ -88,7 +88,8 @@
     categoryGrid: $('categoryGrid'), featuredGrid: $('featuredGrid'),
     catalogGrid: $('catalogGrid'), specialCategoryTabs: $('specialCategoryTabs'),
     specialNewGrid: $('specialNewGrid'), specialCategoryTitle: $('specialCategoryTitle'),
-    specialEmpty: $('specialEmpty'),
+    specialEmpty: $('specialEmpty'), dailyMiscNewGrid: $('dailyMiscNewGrid'),
+    dailyMiscEmpty: $('dailyMiscEmpty'),
     filterRow: $('filterRow'), resultCount: $('resultCount'), dbStatus: $('dbStatus'),
     emptyState: $('emptyState'), catalogSearch: $('catalogSearch'), sortSelect: $('sortSelect'),
     favCount: $('favCount'), productDialog: $('productDialog'), dialogContent: $('dialogContent'),
@@ -201,8 +202,41 @@
     });
   }
 
+  const CATEGORY_ORDER = [
+    '食品',
+    'スイーツ・お菓子',
+    '水・ソフトドリンク',
+    '炭酸水',
+    'お茶・紅茶',
+    'コーヒー',
+    'ビール・洋酒',
+    '日本酒・焼酎',
+    '美容・コスメ・香水',
+    'ダイエット・健康',
+    '日用品',
+    'キッチン用品・食器・調理器具',
+    'インナー・下着・ナイトウェア',
+    'キッズ・ベビー・マタニティ',
+    'ペットグッズ',
+    'インテリア・寝具・収納',
+    '雑貨・文房具・手芸'
+  ];
+
+  function presentCats() {
+    const present = [...new Set(products.map(p => p.department).filter(Boolean))];
+    const ordered = CATEGORY_ORDER.filter(category => present.includes(category));
+    const extras = present
+      .filter(category => !CATEGORY_ORDER.includes(category))
+      .sort((a, b) => a.localeCompare(b, 'ja'));
+    return [...ordered, ...extras];
+  }
+
   function cats() {
-    return [...new Set(products.map(p => p.department))].sort((a, b) => a.localeCompare(b, 'ja'));
+    const present = [...new Set(products.map(p => p.department).filter(Boolean))];
+    const extras = present
+      .filter(category => !CATEGORY_ORDER.includes(category))
+      .sort((a, b) => a.localeCompare(b, 'ja'));
+    return [...CATEGORY_ORDER, ...extras];
   }
 
   function card(p, options = {}) {
@@ -221,7 +255,7 @@
   }
 
   function renderCategories() {
-    const list = cats().slice(0, 8);
+    const list = cats();
     els.categoryGrid.innerHTML = list.map(c => {
       const p = products.find(x => x.department === c);
       return `<a class="category-card" href="#catalogCards" data-category="${escapeAttr(c)}">
@@ -245,23 +279,12 @@
     return 0;
   }
 
-  function newestDepartment() {
-    const latest = [...products].sort((a, b) => productTimestamp(b) - productTimestamp(a))[0];
-    return latest?.department || cats()[0] || '';
-  }
-
   function renderSpecial() {
     if (!els.specialCategoryTabs || !els.specialNewGrid) return;
-    const categories = cats();
-    if (!categories.length) {
-      els.specialCategoryTabs.innerHTML = '';
-      els.specialNewGrid.innerHTML = '';
-      if (els.specialEmpty) els.specialEmpty.hidden = false;
-      return;
-    }
+    const categories = ['すべて', ...cats()];
 
     if (!state.specialCategory || !categories.includes(state.specialCategory)) {
-      state.specialCategory = newestDepartment();
+      state.specialCategory = 'すべて';
     }
 
     els.specialCategoryTabs.innerHTML = categories.map(category =>
@@ -269,16 +292,31 @@
     ).join('');
 
     const latest = products
-      .filter(p => p.department === state.specialCategory)
+      .filter(p => state.specialCategory === 'すべて' || p.department === state.specialCategory)
       .sort((a, b) => productTimestamp(b) - productTimestamp(a))
       .slice(0, 4);
 
     if (els.specialCategoryTitle) {
-      els.specialCategoryTitle.textContent = `${state.specialCategory}の新着商品`;
+      els.specialCategoryTitle.textContent = state.specialCategory === 'すべて'
+        ? 'すべての新着商品'
+        : `${state.specialCategory}の新着商品`;
     }
     els.specialNewGrid.innerHTML = latest.map(p => card(p, { showNew: true })).join('');
     if (els.specialEmpty) els.specialEmpty.hidden = latest.length > 0;
     attachImageFallbacks(els.specialNewGrid);
+  }
+
+  function renderDailyMiscNew() {
+    if (!els.dailyMiscNewGrid) return;
+    const targetDepartments = new Set(['日用品', '雑貨・文房具・手芸', '日用品雑貨・文房具・手芸']);
+    const latest = products
+      .filter(p => targetDepartments.has(p.department))
+      .sort((a, b) => productTimestamp(b) - productTimestamp(a))
+      .slice(0, 4);
+
+    els.dailyMiscNewGrid.innerHTML = latest.map(p => card(p, { showNew: true })).join('');
+    if (els.dailyMiscEmpty) els.dailyMiscEmpty.hidden = latest.length > 0;
+    attachImageFallbacks(els.dailyMiscNewGrid);
   }
 
   function filtered() {
@@ -316,6 +354,7 @@
     localStorage.setItem('ordinaryLuxeFavorites', JSON.stringify([...favorites]));
     renderFeatured();
     renderSpecial();
+    renderDailyMiscNew();
     renderCatalog();
   }
 
@@ -361,7 +400,7 @@
     }
     products = (data || []).map(normalize);
     els.dbStatus.textContent = `Supabaseから${products.length}件の商品を読み込みました。`;
-    renderCategories(); renderFeatured(); renderSpecial(); renderCatalog();
+    renderCategories(); renderFeatured(); renderSpecial(); renderDailyMiscNew(); renderCatalog();
   }
 
   document.addEventListener('click', e => {

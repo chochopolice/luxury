@@ -125,3 +125,10 @@
 .legal-section h3{margin:0 0 8px;font-size:1.02rem;font-weight:600}
 .legal-section p{margin:0;color:#5f564d}
 @media(max-width:640px){.info-dialog-inner{padding:44px 22px 30px}.info-dialog h2{font-size:1.6rem}.footer-links-single{max-width:none}}
+
+/* 2026-09-29: ordered category/special sections and new-arrivals layout */
+#categorySection .category-grid{grid-template-columns:repeat(6,1fr)}
+.daily-misc-new-section{padding-bottom:12px}
+@media(max-width:1240px){#categorySection .category-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:920px){#categorySection .category-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){#categorySection .category-grid{display:flex;overflow-x:auto;grid-template-columns:none}.daily-misc-new-section .section-head{gap:8px}}
