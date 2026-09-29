@@ -135,8 +135,28 @@
     ['ソフトドリンク', '水・ソフトドリンク']
   ]);
 
+  // 以前の実装で誤って生成された複合カテゴリ。
+  // 「日用品」と「雑貨・文房具・手芸」は別カテゴリなので、UIのカテゴリ候補から除外する。
+  const DEPRECATED_COMBINED_CATEGORIES = new Set([
+    '日用品雑貨・文房具・手芸',
+    '日用品・雑貨・文房具・手芸'
+  ]);
+
+  function isDeprecatedCombinedCategory(value) {
+    const cleaned = cleanCategory(value);
+    const compact = cleaned.replace(/\s+/g, '');
+    return DEPRECATED_COMBINED_CATEGORIES.has(cleaned)
+      || DEPRECATED_COMBINED_CATEGORIES.has(compact);
+  }
+
   function canonicalCategory(value) {
     const cleaned = cleanCategory(value);
+    // 正しい2カテゴリは明示的に別物として維持する。
+    if (cleaned === '日用品') return '日用品';
+    if (cleaned === '雑貨・文房具・手芸') return '雑貨・文房具・手芸';
+    // 誤った複合カテゴリはカテゴリタブ候補に出さないため空文字にする。
+    // 商品自体は「すべて」では表示されるので、DB修正前でも商品は消えない。
+    if (isDeprecatedCombinedCategory(cleaned)) return '';
     return CATEGORY_ALIASES.get(cleaned) || cleaned;
   }
 
@@ -263,7 +283,7 @@
     const result = [];
     for (const product of products) {
       const category = canonicalCategory(product.department);
-      if (!category || seen.has(category)) continue;
+      if (!category || isDeprecatedCombinedCategory(category) || seen.has(category)) continue;
       seen.add(category);
       result.push(category);
     }
