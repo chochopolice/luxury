@@ -103,12 +103,49 @@
     return null;
   };
 
+  function cleanCategory(value) {
+    if (!value) return 'その他';
+    return String(value)
+      .normalize('NFKC')
+      .replace(/[\u3000\t\r\n]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  const CATEGORY_ALIASES = new Map([
+    ['お茶', 'お茶・紅茶'],
+    ['紅茶', 'お茶・紅茶'],
+    ['緑茶', 'お茶・紅茶'],
+    ['ビール', 'ビール・洋酒'],
+    ['洋酒', 'ビール・洋酒'],
+    ['ウイスキー', 'ビール・洋酒'],
+    ['ウィスキー', 'ビール・洋酒'],
+    ['ウォッカ', 'ビール・洋酒'],
+    ['日本酒', '日本酒・焼酎'],
+    ['焼酎', '日本酒・焼酎'],
+    ['クッキー', 'スイーツ・お菓子'],
+    ['キャンディ', 'スイーツ・お菓子'],
+    ['チョコ', 'スイーツ・お菓子'],
+    ['チョコレート', 'スイーツ・お菓子'],
+    ['グミ', 'スイーツ・お菓子'],
+    ['アイス', 'スイーツ・お菓子'],
+    ['アイスクリーム', 'スイーツ・お菓子'],
+    ['ガム', 'スイーツ・お菓子'],
+    ['水', '水・ソフトドリンク'],
+    ['ソフトドリンク', '水・ソフトドリンク']
+  ]);
+
+  function canonicalCategory(value) {
+    const cleaned = cleanCategory(value);
+    return CATEGORY_ALIASES.get(cleaned) || cleaned;
+  }
+
   function normalize(row) {
     const price = Number(pick(row, 'price_jpy', '値段', '価格') || 0);
     return {
       id: String(pick(row, 'id', 'product_code', '品番') || crypto.randomUUID()),
       code: pick(row, 'product_code', '商品コード') || '',
-      department: pick(row, 'department', '部門', 'category', 'カテゴリ') || 'その他',
+      department: canonicalCategory(pick(row, 'department', '部門', 'category', 'カテゴリ')),
       name: pick(row, 'product_name', '品名', '商品名') || '名称未設定',
       country: pick(row, 'origin_country', '原産国') || '',
       price: Number.isFinite(price) ? price : 0,
@@ -221,9 +258,22 @@
     '雑貨・文房具・手芸'
   ];
 
+  function distinctProductCategories() {
+    const seen = new Set();
+    const result = [];
+    for (const product of products) {
+      const category = canonicalCategory(product.department);
+      if (!category || seen.has(category)) continue;
+      seen.add(category);
+      result.push(category);
+    }
+    return result;
+  }
+
   function presentCats() {
-    const present = [...new Set(products.map(p => p.department).filter(Boolean))];
-    const ordered = CATEGORY_ORDER.filter(category => present.includes(category));
+    const present = distinctProductCategories();
+    const presentSet = new Set(present);
+    const ordered = CATEGORY_ORDER.filter(category => presentSet.has(category));
     const extras = present
       .filter(category => !CATEGORY_ORDER.includes(category))
       .sort((a, b) => a.localeCompare(b, 'ja'));
@@ -231,7 +281,7 @@
   }
 
   function cats() {
-    const present = [...new Set(products.map(p => p.department).filter(Boolean))];
+    const present = distinctProductCategories();
     const extras = present
       .filter(category => !CATEGORY_ORDER.includes(category))
       .sort((a, b) => a.localeCompare(b, 'ja'));
